@@ -1,3 +1,3 @@
-<%= @list.name %>
-
-<%= cl_image_tag @list.photo.key %>
+<% content_for :banner do %>
+  <%= render 'shared/banner', heading: @list.name, image: cl_image_path(@list.photo.key) %>
+<% end %>
