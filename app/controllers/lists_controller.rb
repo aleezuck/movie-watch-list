@@ -3,6 +3,11 @@ class ListsController < ApplicationController
     @lists = policy_scope(List)
   end
 
+  def show
+    @list = List.find(params[:id])
+    authorize(@list)
+  end
+
   def new
     @list = List.new
     authorize(@list)
