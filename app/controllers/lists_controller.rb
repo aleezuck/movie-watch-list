@@ -15,10 +15,11 @@ class ListsController < ApplicationController
 
   def create
     @list = List.new(list_params)
+    @list.user = current_user
     authorize(@list)
 
     if @list.save
-      redirect_to lists_path, notice: "List created!"
+      redirect_to list_path(@list), notice: "List created!"
     else
       render :new
     end
