@@ -1,4 +1,7 @@
 class ListsController < ApplicationController
+  skip_after_action :verify_authorized, only: :my_lists
+  after_action :verify_policy_scoped, only: :my_lists
+
   def index
     @lists = policy_scope(List)
   end
@@ -23,6 +26,10 @@ class ListsController < ApplicationController
     else
       render :new
     end
+  end
+
+  def my_lists
+    @lists = policy_scope(List).where(user: current_user)
   end
 
   private
