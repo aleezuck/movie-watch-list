@@ -1,6 +1,6 @@
 <div class="row">
   <% @movies.each do |movie| %>
-    <div class="col-3">
+    <div class="col-12 col-sm-6 col-md-3">
       <div class="card bg-dark text-white my-3">
         <img src="https://image.tmdb.org/t/p/w500/<%= movie.poster_url %>" class="card-img" alt="<%= movie.title %>">
         <div class="card-header">
