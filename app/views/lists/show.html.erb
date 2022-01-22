@@ -1,3 +1,13 @@
 <% content_for :banner do %>
   <%= render 'shared/banner', heading: @list.name, image: list_photo(@list) %>
 <% end %>
+
+<% @list.bookmarks.each do |bookmark| %>
+  <%= bookmark.movie.title %>
+<% end %>
+
+<%= simple_form_for [@list, @bookmark] do |f| %>
+  <%= f.association :movie %>
+  <%= f.input :comment %>
+  <%= f.submit class: 'btn btn-primary' %>
+<% end %>

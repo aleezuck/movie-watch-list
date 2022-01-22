@@ -4,4 +4,8 @@ class BookmarkPolicy < ApplicationPolicy
       scope.all
     end
   end
+
+  def create?
+    record.list.user = user
+  end
 end
