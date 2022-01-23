@@ -10,6 +10,7 @@ class ListsController < ApplicationController
     @list = List.find(params[:id])
     authorize(@list)
     @bookmark = Bookmark.new
+    @bookmark.list = @list
   end
 
   def new

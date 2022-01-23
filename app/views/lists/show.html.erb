@@ -2,12 +2,32 @@
   <%= render 'shared/banner', heading: @list.name, image: list_photo(@list) %>
 <% end %>
 
-<% @list.bookmarks.each do |bookmark| %>
-  <%= bookmark.movie.title %>
-<% end %>
+<h2><%= pluralize(@list.bookmarks.count, 'movie') %> bookmarked by <%= @list.user.username %></h2>
 
-<%= simple_form_for [@list, @bookmark] do |f| %>
-  <%= f.association :movie %>
-  <%= f.input :comment %>
-  <%= f.submit class: 'btn btn-primary' %>
+<div class="row">
+  <% @list.bookmarks.each do |bookmark| %>
+    <div class="col-12 col-md-6 col-lg-4 d-flex">
+      <div class="card my-3 bookmark-card flex-fill">
+          <img src="https://image.tmdb.org/t/p/w300<%= bookmark.movie.poster_url %>" class="card-img-top" alt="<%= bookmark.movie.title %> poster">
+          <div class="card-body">
+            <div class="d-flex">
+            <h5 class="card-title"><%= bookmark.movie.title %></h5>
+            <p class="card-text text-center"><i class="fas fa-star text-warning"></i><%= bookmark.movie.rating %></p>
+            </div>
+            <p class="card-text text-muted"><%= bookmark.movie.overview %></p>
+            <p class="card-text font-italic"><i class="fas fa-quote-left mr-2"></i> <%= bookmark.comment %></p>
+          </div>
+        </div>
+    </div>
+  <% end %>
+</div>
+
+<% if policy(@bookmark).create? %>
+  <h2>Add a movie to this list</h2>
+
+  <%= simple_form_for [@list, @bookmark] do |f| %>
+    <%= f.association :movie %>
+    <%= f.input :comment %>
+    <%= f.submit class: 'btn btn-primary' %>
+  <% end %>
 <% end %>

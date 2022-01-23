@@ -6,6 +6,6 @@ class BookmarkPolicy < ApplicationPolicy
   end
 
   def create?
-    record.list.user = user
+    record.list.user == user
   end
 end
