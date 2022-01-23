@@ -2,7 +2,16 @@
   <%= render 'shared/banner', heading: @list.name, image: list_photo(@list) %>
 <% end %>
 
-<h2><%= pluralize(@list.bookmarks.count, 'movie') %> bookmarked by <%= @list.user.username %></h2>
+<div class="d-flex justify-content-between align-items-center">
+  <h2><%= pluralize(@list.bookmarks.count, 'movie') %> bookmarked by <%= @list.user.username %></h2>
+  <div>
+    <% if policy(@bookmark).create? %>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#bookmarkModal">
+        Add a movie
+      </button>
+    <% end %>
+  </div>
+</div>
 
 <div class="row">
   <% @list.bookmarks.each do |bookmark| %>
@@ -10,9 +19,9 @@
       <div class="card my-3 bookmark-card flex-fill">
           <img src="https://image.tmdb.org/t/p/w300<%= bookmark.movie.poster_url %>" class="card-img-top" alt="<%= bookmark.movie.title %> poster">
           <div class="card-body">
-            <div class="d-flex">
-            <h5 class="card-title"><%= bookmark.movie.title %></h5>
-            <p class="card-text text-center"><i class="fas fa-star text-warning"></i><%= bookmark.movie.rating %></p>
+            <div class="d-flex justify-content-between mb-2">
+            <h5 class="card-title pr-2"><%= bookmark.movie.title %></h5>
+            <p class="card-text text-center"><i class="fas fa-star text-warning"></i><br><%= bookmark.movie.rating %></p>
             </div>
             <p class="card-text text-muted"><%= bookmark.movie.overview %></p>
             <p class="card-text font-italic"><i class="fas fa-quote-left mr-2"></i> <%= bookmark.comment %></p>
@@ -23,11 +32,26 @@
 </div>
 
 <% if policy(@bookmark).create? %>
-  <h2>Add a movie to this list</h2>
-
-  <%= simple_form_for [@list, @bookmark] do |f| %>
-    <%= f.association :movie, collection: Movie.all.order(:title), input_html: { class: 'select2', style: 'width: 100%' } %>
-    <%= f.input :comment %>
-    <%= f.submit class: 'btn btn-primary' %>
-  <% end %>
+  <div class="modal fade" id="bookmarkModal" tabindex="-1" aria-labelledby="bookmarkModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="bookmarkModalLabel">Add a movie to this list</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <%= simple_form_for [@list, @bookmark] do |f| %>
+          <div class="modal-body">
+            <%= f.association :movie, collection: Movie.all.order(:title), input_html: { class: 'select2', style: 'width: 100%' } %>
+            <%= f.input :comment %>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <%= f.submit 'Add movie', class: 'btn btn-primary' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
 <% end %>
