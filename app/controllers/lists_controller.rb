@@ -1,4 +1,5 @@
 class ListsController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:index, :show]
   skip_after_action :verify_authorized, only: :my_lists
   after_action :verify_policy_scoped, only: :my_lists
 
