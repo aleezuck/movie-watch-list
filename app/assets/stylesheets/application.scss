@@ -1,7 +1,9 @@
 @import "bootstrap/scss/bootstrap";
 @import "font-awesome-sprockets";
 @import "font-awesome";
+@import 'select2/dist/css/select2';
 
+@import "bookmarks/index";
 @import "components/index";
 @import "lists/index";
 @import "pages/index";
